@@ -7,6 +7,6 @@ RUN apk update &&\
 
 COPY src/python /rfid-musicplayer/
 
-RUN pip install -r /rfid-musicplayer/requirements.txt
+RUN pip3 install -r /rfid-musicplayer/requirements.txt
 
-CMD /rfid-musicplayer/rfid_input_reader.py
+CMD python3 /rfid-musicplayer/rfid_input_reader.py
