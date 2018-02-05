@@ -3,7 +3,11 @@ MAINTAINER @protenhan
 
 RUN apk update &&\
     apk -U add \
-        python3
+        python3 \
+        linux-headers \
+        python3-dev \
+        gcc \
+        musl-dev
 
 COPY src/python /rfid-musicplayer/
 
