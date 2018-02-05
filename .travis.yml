@@ -1,0 +1,18 @@
+sudo: required
+services:
+- docker
+language: bash
+env:
+- RFID-MUSICPLAYER=0.1
+script:
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# build image
+- docker build --build-arg RFID-MUSICPLAYER=$RFID-MUSICPLAYER -t protenhan/rpi-rfid-musicplayer .
+# push image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    docker tag $DOCKER_USER/rpi-rpi-rfid-musicplayer $DOCKER_USER/rpi-rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rpi-rfid-musicplayer
+  fi
