@@ -12,7 +12,7 @@ script:
 # push image
 - >
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    docker tag $DOCKER_USER/rpi-rpi-rfid-musicplayer $DOCKER_USER/rpi-rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
-    docker push $DOCKER_USER/rpi-rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
-    docker push $DOCKER_USER/rpi-rpi-rfid-musicplayer
+    docker tag $DOCKER_USER/rpi-rfid-musicplayer $DOCKER_USER/rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer:$RFID-MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer
   fi
