@@ -1,10 +1,13 @@
 import string
+import os
 
 from evdev import InputDevice
 from select import select
 
+devicePath = os.environ['RFID_DEVICE_PATH']
+
 keys = "X^1234567890XXXXqwertzuiopXXXXasdfghjklXXXXXyxcvbnmXXXXXXXXXXXXXXXXXXXXXXX"
-dev = InputDevice('/dev/input/by-id/usb-HID_OMNIKEY_5127_CK_01010053423438303000835748112531-event-kbd')
+dev = InputDevice(devicePath)
 
 while True:
    r,w,x = select([dev], [], [])
