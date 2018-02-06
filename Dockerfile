@@ -9,15 +9,15 @@ ENV GOARM=7
 #RUN apk add git \
 #            linux-headers
 
-RUN apt-get update
-RUN apt-get install git
+RUN apk update
+RUN apk add git
 
 COPY ./ /musicplayer/
 WORKDIR /musicplayer/src/go
 
 # resolve dependencies and build the binaries
-#RUN go get github.com/gvalkov/golang-evdev
-#RUN go build .
+RUN go get github.com/gvalkov/golang-evdev
+RUN go build .
 
 ### build the docker image for raspberry pi
 FROM arm32v6/alpine:3.7
