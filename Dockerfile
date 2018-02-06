@@ -1,14 +1,11 @@
-FROM arm32v6/golang:1.9.3-alpine3.7 as builder
+FROM golang:1.9.3-alpine3.7 as builder
 
+ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=arm
 ENV GOARM=7
 
 # install git to enable go get
-#RUN apk update
-#RUN apk add git \
-#            linux-headers
-
 RUN apk update
 RUN apk add git
 
