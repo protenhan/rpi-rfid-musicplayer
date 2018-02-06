@@ -1,16 +1,26 @@
-FROM golang:1.9-alpine3.7 as builder
+FROM golang:1.9-stretch as builder
 
 ENV GOOS=linux
 ENV GOARCH=arm
 ENV GOARM=7
 
-COPY src/go /go/src/musicplayer/
+# install git to enable go get
+#RUN apk update
+#RUN apk add git \
+#            linux-headers
 
-WORKDIR /go/src/musicplayer
+RUN apt-get update
+RUN apt-get install git
 
-RUN go build -v .
+COPY ./ /musicplayer/
+WORKDIR /musicplayer/src/go
 
-FROM hypriot/rpi-alpine
+# resolve dependencies and build the binaries
+#RUN go get github.com/gvalkov/golang-evdev
+#RUN go build .
+
+### build the docker image for raspberry pi
+FROM arm32v6/alpine:3.7
 MAINTAINER @protenhan
 
 COPY --from=builder /go/src/musicplayer/musicplayer /rfid-musicplayer/
