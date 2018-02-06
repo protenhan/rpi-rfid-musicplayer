@@ -1,4 +1,4 @@
-FROM golang:1.9-stretch as builder
+FROM arm32v6/golang:1.9.3-alpine3.7 as builder
 
 ENV GOOS=linux
 ENV GOARCH=arm
