@@ -13,7 +13,7 @@ addons:
       - lxc-templates
 
 script:
-  - lxc-create -t ubuntu -n armbuntu -- -a armhf
+  - sudo lxc-create -t ubuntu -n armbuntu -- -a armhf
   - ./travis-build.sh
   - >
     if [ -n "$TRAVIS_TAG" ]; then
