@@ -6,15 +6,7 @@ env:
   matrix:
   - ARCH=arm
 
-addons:
-   apt:
-      packages:
-      - lxc
-      - lxc-templates
-      - debootstrap
-
 script:
-  - sudo lxc-create -t ubuntu -n armbuntu -- -a armhf
   - ./travis-build.sh
   - >
     if [ -n "$TRAVIS_TAG" ]; then
