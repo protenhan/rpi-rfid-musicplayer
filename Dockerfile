@@ -1,4 +1,4 @@
-FROM golang:1.9.3-alpine3.7 as builder
+FROM arm32v6/golang:1.9.2-alpine3.7 as builder
 
 ENV CGO_ENABLED=0
 ENV GOOS=linux
@@ -14,7 +14,7 @@ WORKDIR /musicplayer/src/go
 
 # resolve dependencies and build the binaries
 RUN go get github.com/karalabe/xgo
-#RUN go get github.com/gvalkov/golang-evdev
+RUN go get github.com/gvalkov/golang-evdev
 RUN xgo -go 1.9.2 --targets=linux/arm-7 build .
 
 ### build the docker image for raspberry pi
