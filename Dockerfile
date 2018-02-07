@@ -4,6 +4,7 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=arm
 ENV GOARM=7
+ENV GOHOSTARCH=amd64
 
 # install git to enable go get
 RUN apk update
