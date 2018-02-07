@@ -11,6 +11,7 @@ addons:
       packages:
       - lxc
       - lxc-templates
+      - debootstrap
 
 script:
   - sudo lxc-create -t ubuntu -n armbuntu -- -a armhf
