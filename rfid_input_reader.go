@@ -11,8 +11,10 @@ var (
 )
 
 func main() {
-	fmt.Print("device path: ", devicePath)
-	fmt.Print(evdev.IsInputDevice(devicePath))
+	fmt.Println("device path: ", devicePath)
+	fmt.Println(evdev.IsInputDevice(devicePath))
+	device, _ := evdev.Open(devicePath)
+	fmt.Println(device)
 }
 
 func init() {
