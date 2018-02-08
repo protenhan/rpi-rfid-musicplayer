@@ -35,7 +35,4 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/go,gradle
-.idea/modules.xml
-.idea/rpi-rfid-musicplayer.iml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/*
