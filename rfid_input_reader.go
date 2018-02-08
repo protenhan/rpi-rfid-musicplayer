@@ -13,9 +13,10 @@ var (
 func main() {
 	fmt.Println("device path: ", devicePath)
 	fmt.Println(evdev.IsInputDevice(devicePath))
-	device, _ := evdev.Open(devicePath)
+	device, error := evdev.Open(devicePath)
 	for true {
-		event := evdev.Read(device)
+		event, error := device.Read()
+		event, error := evdev.Read(device)
 		fmt.Println("A event was triggered: " + event)
 	}
 }
