@@ -15,7 +15,7 @@ func main() {
 	fmt.Println(evdev.IsInputDevice(devicePath))
 	device, _ := evdev.Open(devicePath)
 	for true {
-		event := device.Read()
+		event := evdev.Read(device)
 		fmt.Println("A event was triggered: " + event)
 	}
 }
