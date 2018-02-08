@@ -18,7 +18,7 @@ func main() {
 	for true {
 		event, _ := device.Read()
 		for i, v := range event {
-			fmt.Println("A event was triggered: " + "index: " + strconv.Itoa(i) + " and value: " + v)
+			fmt.Println("A event was triggered: " + "index: " + strconv.Itoa(i) + " and value: " + v.Value)
 		}
 	}
 }
