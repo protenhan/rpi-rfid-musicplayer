@@ -16,5 +16,4 @@ if [ -d tmp ]; then
   rm -rf tmp
 fi
 
-docker build -t protenhan/rpi-rfid-musicplayer:edge .
-docker push protenhan/rpi-rfid-musicplayer:edge
+docker build -t rpi-rfid-musicplayer .
