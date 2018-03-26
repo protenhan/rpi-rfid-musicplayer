@@ -1,10 +1,9 @@
 package main
 
 import (
-"fmt"
-"os"
-"github.com/gvalkov/golang-evdev"
-"strconv"
+	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 var (
@@ -13,16 +12,18 @@ var (
 
 func main() {
 	fmt.Println("device path: ", devicePath)
-	fmt.Println(evdev.IsInputDevice(devicePath))
-	device, _ := evdev.Open(devicePath)
-	for true {
-		event, _ := device.Read()
-		for i, v := range event {
-			fmt.Println("A event was triggered: " + "index: " + strconv.Itoa(i) + " and value: " + v.Value)
+
+	for {
+		cardID, err := ioutil.ReadFile(devicePath)
+		if err != nil {
+			panic(err)
 		}
+
+		fmt.Println(cardID)
 	}
+
 }
 
 func init() {
-	devicePath = os.Getenv("RFID_DEVICE_PATH")
+	devicePath = os.Getenv("RFID_HID_DEVICE_PATH")
 }
