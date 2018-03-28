@@ -7,14 +7,14 @@ import (
 )
 
 var (
-	devicePath string
+	device string
 )
 
 func main() {
-	fmt.Println("device path: ", devicePath)
+	fmt.Println("device: ", device)
 
 	for {
-		cardID, err := ioutil.ReadFile(devicePath)
+		cardID, err := ioutil.ReadFile(device)
 		if err != nil {
 			panic(err)
 		}
@@ -25,5 +25,5 @@ func main() {
 }
 
 func init() {
-	devicePath = os.Getenv("RFID_HID_DEVICE_PATH")
+	device = os.Getenv("RFID_HID_DEVICE")
 }

@@ -14,18 +14,22 @@ Musicplayer for the rapsberry pi that plays music based on RFID cards that are p
 
 ## Running Musicplayer
 
-Set the RFID_DEVICE_PATH environment variable to specify the devicePath of your RFID reader
+My RFID Reader presents itself as an HumanInterfaceDevice (a.k.a. keyboard) to the system. Therfore read the values from the reader from ```/dev/hidraw0```. 
+If you also connected another keyboard to your Raspberry Pi then it might also be ```/dev/hidraw1``` or even higher. 
+
+Set the RFID_HID_DEVICE environment variable to specify the hidraw device of your RFID reader
 
 1. Get the id of your RFID reader
 ```bash
-user@raspi-soundbox:~ $ ls /dev/input/by-id/
-usb-Sycreader_USB_Reader_08FF20150112-event-kbd
+user@raspi-soundbox:~ $ ls /dev/hidraw*
+/dev/hidraw0
 ```
 2. Set the Device Path to your environment
 ```bash
-export RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd
-```
-3. Run the docker container
+export RFID_HID_DEVICE=/dev/hidraw0
+
+## Run the container
+1. Run the docker container
 ```bash
-docker run --rm -e RFID_DEVICE_PATH=$RFID_DEVICE_PATH --device=$RFID_DEVICE_PATH protenhan/rpi-rfid-musicplayer
+docker run --rm -e RFID_HID_DEVICE=$RFID_HID_DEVICE --device=$RFID_HID_DEVICE protenhan/rpi-rfid-musicplayer
 ```
