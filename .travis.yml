@@ -8,6 +8,5 @@ env:
 
 script:
   - ./travis-build.sh
-  - >
-    travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    ./travis-deploy.sh
+  - travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" 
+  - ./travis-deploy.sh
