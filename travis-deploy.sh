@@ -3,7 +3,8 @@ set -e
 
 image="protenhan/rpi-rfid-musicplayer"
 # push tagged images if the commit was tagged
-if [ $# -eq 1 ]; then
+
+if [ -n "$TRAVIS_TAG" ]; then
   docker tag rpi-rfid-musicplayer "$image:$TRAVIS_TAG-alpine-$ARCH"
   docker push "$image:$TRAVIS_TAG-alpine-$ARCH"
 fi
