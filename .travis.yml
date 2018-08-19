@@ -3,7 +3,7 @@ services:
 - docker
 language: bash
 env:
-- RFID_MUSICPLAYER=0.1
+- RFID_MUSICPLAYER=0.3
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
