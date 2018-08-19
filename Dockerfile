@@ -1,25 +1,16 @@
-FROM golang:1.10.0-alpine3.7 as builder
-
-ENV CGO_ENABLED=0
-ENV GOOS=linux
-ENV GOARCH=arm
-ENV GOARM=7
-ENV GOHOSTARCH=amd64
-
-# install git to enable go get
-RUN apk update
-RUN apk add git
-
-COPY ./ /musicplayer/
-WORKDIR /musicplayer/
-
-# resolve dependencies and build the binaries
-RUN go build .
-
-### build the docker image for raspberry pi
-FROM arm32v6/alpine:3.7
+FROM hypriot/rpi-alpine
 MAINTAINER @protenhan
 
-COPY --from=builder /musicplayer/musicplayer /rfid-musicplayer/
+RUN apk update &&\
+    apk -U add \
+        python3 \
+        linux-headers \
+        python3-dev \
+        gcc \
+        musl-dev
 
-CMD /rfid-musicplayer/musicplayer
+COPY src/python /rfid-musicplayer/
+
+RUN pip3 install -r /rfid-musicplayer/requirements.txt
+
+CMD python3 /rfid-musicplayer/rfid_input_reader.py

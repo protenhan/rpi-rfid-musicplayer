@@ -3,10 +3,16 @@ services:
 - docker
 language: bash
 env:
-  matrix:
-  - ARCH=arm
-
+- RFID_MUSICPLAYER=0.1
 script:
-  - ./travis-build.sh
-  - travis_retry timeout 5m docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" 
-  - ./travis-deploy.sh
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# build image
+- docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -t protenhan/rpi-rfid-musicplayer .
+# push image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    docker tag $DOCKER_USER/rpi-rfid-musicplayer $DOCKER_USER/rpi-rfid-musicplayer:$RFID_MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer:$RFID_MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer
+  fi
