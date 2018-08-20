@@ -17,8 +17,8 @@ while True:
         if event.type==1 and event.value==1:
             character = keys[ event.code ]
             if character is "X":
-                print code
+                print(code)
                 code = ""
             else:
-                    code += character
+                code += character
 
