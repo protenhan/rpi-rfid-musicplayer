@@ -5,10 +5,16 @@
 # rpi-rfid-musicplayer
 Musicplayer for the rapsberry pi that plays music based on RFID cards that are presented to a RFID reader.
 
+## Requirements
+
+* Raspberry Pi 3 (a Raspberry Pi 2 will propably also work)
+* USB RFID card reader (I'm using [this cheap china one from amazon](https://www.amazon.de/gp/product/B00HSDOTTU/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1))
+                       ![Card reader image](https://images-na.ssl-images-amazon.com/images/I/51GC53JXfPL._SX425_.jpg)
+
 ## Running Musicplayer
 
-Set the RFID_DEVICE_PATH environment variable to specify the devicePath of your RFID reader
+My RFID Reader presents itself as an HumanInterfaceDevice (a.k.a. keyboard) to the system. Set the RFID_DEVICE_PATH environment variable to specify the devicePath of your RFID reader  
 
 ```
-docker run --rm -e RFID_DEVICE_PATH=/dev/input/by-id/usb-HID_OMNIKEY_5127_CK_01010053423438303000835748112531-event-kbd --device=/dev/input/by-id/usb-HID_OMNIKEY_5127_CK_01010053423438303000835748112531-event-kbd protenhan/rpi-rfid-musicplayer
+docker run --rm -e RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd protenhan/rpi-rfid-musicplayer
 ```
