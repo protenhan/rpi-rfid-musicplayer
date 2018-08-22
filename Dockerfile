@@ -7,7 +7,11 @@ RUN apk update &&\
         linux-headers \
         python3-dev \
         gcc \
-        musl-dev
+        musl-dev \
+        alsa-utils \
+        alsa-utils-doc \
+        alsa-lib \
+        alsaconf
 
 COPY src/python /rfid-musicplayer/
 
