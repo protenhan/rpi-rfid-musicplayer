@@ -1,5 +1,6 @@
 import string
 import os
+import subprocess
 
 from evdev import InputDevice
 from select import select
@@ -11,13 +12,18 @@ dev = InputDevice(devicePath)
 
 code = ""
 
+def play_folder(folder_name):
+    folder_path = "/audio/" + folder_name
+    subprocess.check_output(['play', folder_path])
+
 while True:
     r,w,x = select([dev], [], [])
     for event in dev.read():
         if event.type==1 and event.value==1:
             character = keys[ event.code ]
             if character is "X":
-                print(code)
+                print(code + "was read")
+                play_folder(code)
                 code = ""
             else:
                 code += character
