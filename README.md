@@ -16,5 +16,5 @@ Musicplayer for the rapsberry pi that plays music based on RFID cards that are p
 My RFID Reader presents itself as an HumanInterfaceDevice (a.k.a. keyboard) to the system. Set the RFID_DEVICE_PATH environment variable to specify the devicePath of your RFID reader  
 
 ```
-docker run --rm -e RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd protenhan/rpi-rfid-musicplayer
+docker run --rm -e RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device /dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device /dev/snd --mount /usr/share/alsa/alsa.conf:/usr/share/alsa/alsa.conf protenhan/rpi-rfid-musicplayer
 ```
