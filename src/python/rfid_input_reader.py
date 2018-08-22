@@ -13,7 +13,7 @@ dev = InputDevice(devicePath)
 code = ""
 
 def play_folder(folder_name):
-    folder_path = "/audio/" + folder_name
+    folder_path = "/audio/" + folder_name + ".mp3"
     subprocess.check_output(['play', folder_path])
 
 while True:
@@ -22,7 +22,7 @@ while True:
         if event.type==1 and event.value==1:
             character = keys[ event.code ]
             if character is "X":
-                print(code + "was read")
+                print(code + " was read")
                 play_folder(code)
                 code = ""
             else:
