@@ -6,7 +6,7 @@ env:
 - RFID_MUSICPLAYER=0.3.1
 script:
 # prepare for cross compiling
-- prepare_local_build_env.sh
+- ./prepare_local_build_env.sh
 # build image
 - docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -t protenhan/rpi-rfid-musicplayer .
 # push image
