@@ -99,3 +99,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+### Docker Cross building ###
+# no qemu static binaries
+*qemu-*-static*
