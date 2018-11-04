@@ -16,5 +16,4 @@ script:
     docker push $DOCKER_USER/rpi-rfid-musicplayer:$RFID_MUSICPLAYER-alpine
     docker push $DOCKER_USER/rpi-rfid-musicplayer
   fi
-## build button control image
-- docker build -f Dockerfile_button -t protenhan/
+  
