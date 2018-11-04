@@ -7,12 +7,14 @@ env:
 script:
 # prepare for cross compiling
 - ./prepare_local_build_env.sh
-# build image
-- docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -t protenhan/rpi-rfid-musicplayer .
-# push image
+## build rfid reader image
+- docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -f Dockerfile -t protenhan/rpi-rfid-musicplayer .
+## push image
 - >
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     docker tag $DOCKER_USER/rpi-rfid-musicplayer $DOCKER_USER/rpi-rfid-musicplayer:$RFID_MUSICPLAYER-alpine
     docker push $DOCKER_USER/rpi-rfid-musicplayer:$RFID_MUSICPLAYER-alpine
     docker push $DOCKER_USER/rpi-rfid-musicplayer
   fi
+## build button control image
+- docker build -f Dockerfile_button -t protenhan/
