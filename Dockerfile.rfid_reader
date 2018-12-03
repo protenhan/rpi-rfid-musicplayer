@@ -9,14 +9,6 @@ RUN apk update &&\
         python3-dev \
         gcc \
         musl-dev \
-        alsa-utils \
-        alsa-utils-doc \
-        alsa-lib \
-        alsaconf \
-        sox
-
-# Configure alsa audio
-RUN sed '/audio:x:18/s/$/root/' /etc/group
 
 # Setup for the project
 COPY src/python/ /rfid-musicplayer/

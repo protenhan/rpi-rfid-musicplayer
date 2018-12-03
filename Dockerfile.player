@@ -7,7 +7,17 @@ RUN apk update && apk add git
 RUN go get -d -v ./...
 RUN env GOOS=linux GOARCH=arm GOARM=7 go build -o rpi-rfid-musicplayer_player
 
-FROM scratch
+FROM arm32v6/alpine:3.8
+
+RUN apk update &&\
+    apk -U add \
+        alsa-utils \
+        alsa-utils-doc \
+        alsa-lib \
+        alsaconf \
+
+# Configure alsa audio
+RUN sed '/audio:x:18/s/$/root/' /etc/group
 
 COPY --from=builder /go/src/app/rpi-rfid-musicplayer_player /rpi-rfid-musicplayer_player
 EXPOSE 8000
