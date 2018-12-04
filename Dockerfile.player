@@ -7,7 +7,9 @@ RUN apk update && apk add git
 RUN go get -d -v ./...
 RUN env GOOS=linux GOARCH=arm GOARM=7 go build -o rpi-rfid-musicplayer_player
 
+# Create the Raspi Container
 FROM arm32v6/alpine:3.8
+COPY qemu-arm-static /usr/bin/
 
 RUN apk update &&\
     apk -U add \
@@ -15,6 +17,7 @@ RUN apk update &&\
         alsa-utils-doc \
         alsa-lib \
         alsaconf \
+        mplayer
 
 # Configure alsa audio
 RUN sed '/audio:x:18/s/$/root/' /etc/group
