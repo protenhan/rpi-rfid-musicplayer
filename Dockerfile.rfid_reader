@@ -8,7 +8,7 @@ RUN apk update &&\
         linux-headers \
         python3-dev \
         gcc \
-        musl-dev \
+        musl-dev
 
 # Setup for the project
 COPY src/python/ /rfid-musicplayer/
