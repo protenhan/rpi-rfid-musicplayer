@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  player:
+    image: protenhan/rpi-rfid-musicplayer_player:latest
+    volumes:
+      - $HOME/audio/:/audio/
+      - /etc/asound.conf:/etc/asound.conf
+    devices:
+      - "/dev/snd:/dev/snd"
+  
+  rfid_reader:
+    image: protenhan/rpi-rfid-musicplayer_reader:latest
+    devices:
+      - "/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd:/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd" 
+    environment:
+      - RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd
+      - PLAYER_HOST=player:8000

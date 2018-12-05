@@ -24,5 +24,5 @@ RUN sed '/audio:x:18/s/$/root/' /etc/group
 
 COPY --from=builder /go/src/app/rpi-rfid-musicplayer_player /rpi-rfid-musicplayer_player
 EXPOSE 8000
-CMD [ "rpi-rfid-musicplayer_player" ]
+CMD [ "/rpi-rfid-musicplayer_player" ]
 
