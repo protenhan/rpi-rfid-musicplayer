@@ -104,3 +104,4 @@ ENV/
 ### Docker Cross building ###
 # no qemu static binaries
 *qemu-*-static*
+.vscode/launch.json

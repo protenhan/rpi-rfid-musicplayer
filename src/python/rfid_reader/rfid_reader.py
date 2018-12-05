@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 import os
-import subprocess
 
 from evdev import InputDevice
 from select import select
-
+import requests
 
 class RFIDReader:
-    def play_folder(self, folder_name):
-        folder_path = "/audio/" + folder_name + ".mp3"
-        subprocess.check_output(['play', folder_path])
+    player_host = os.environ['PLAYER_HOST']
+    def send_playlist_cmd(self, code):
+        r = requests.post('http://' + player_host + '/rfid_player/playlist/' + code)
+        print(r.status_code, r.reason)
 
     def activate_reader(self):
         devicePath = os.environ['RFID_DEVICE_PATH']
