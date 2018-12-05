@@ -33,16 +33,19 @@ var playerState state
 
 // our main function
 func main() {
+	print("player started and listening")
 	router := mux.NewRouter()
 	router.HandleFunc("/rfid_player/playlist/{id}", startPlaybackOfPlaylistWithID).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
 func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Request) {
+	print("recieved POST request")
 	params := mux.Vars(request)
 	var Playlist playlist
 	_ = json.NewDecoder(request.Body).Decode(&Playlist)
 	Playlist.ID = params["id"]
+	print("New Playlist ID is " + Playlist.ID)
 	currentPlaylist = Playlist
 	json.NewEncoder(writer).Encode(currentPlaylist)
 }
