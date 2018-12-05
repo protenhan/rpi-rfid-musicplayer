@@ -26,7 +26,7 @@ if __name__ == "__main__":
                 character = keys[event.code]
                 if character is "X":
                     print(code + " was read")
-                    self.send_playlist_cmd(code)
+                    send_playlist_cmd(code)
                     code = ""
                 else:
                     code += character
