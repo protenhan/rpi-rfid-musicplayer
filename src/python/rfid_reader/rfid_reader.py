@@ -7,7 +7,7 @@ import requests
 
 
 player_host = os.environ['PLAYER_HOST']
-def send_playlist_cmd(self, code):
+def send_playlist_cmd(code):
     r = requests.post('http://' + player_host + '/rfid_player/playlist/' + code)
     print(r.status_code, r.reason)
 
