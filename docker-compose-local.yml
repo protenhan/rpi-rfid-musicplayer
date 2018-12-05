@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  player:
+    build:
+      context: ./
+      dockerfile: Dockerfile.player
+    volumes:
+      - $HOME/audio/:/audio/
+      - /etc/asound.conf:/etc/asound.conf
+    devices:
+      - "/dev/snd:/dev/snd"
+  
+  rfid_reader:
+    build:
+      context: ./
+      dockerfile: Dockerfile.rfid_reader
+    devices:
+      - "/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd:/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd" 
+    environment:
+      - RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd
+      - PLAYER_HOST=player:8000
