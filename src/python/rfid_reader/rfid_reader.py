@@ -1,33 +1,32 @@
 #!/usr/bin/env python
-
 import os
 
 from evdev import InputDevice
 from select import select
 import requests
 
-class RFIDReader:
-    player_host = os.environ['PLAYER_HOST']
-    def send_playlist_cmd(self, code):
-        r = requests.post('http://' + player_host + '/rfid_player/playlist/' + code)
-        print(r.status_code, r.reason)
 
-    def activate_reader(self):
-        devicePath = os.environ['RFID_DEVICE_PATH']
+player_host = os.environ['PLAYER_HOST']
+def send_playlist_cmd(self, code):
+    r = requests.post('http://' + player_host + '/rfid_player/playlist/' + code)
+    print(r.status_code, r.reason)
 
-        keys = "X^1234567890XXXXqwertzuiopXXXXasdfghjklXXXXXyxcvbnmXXXXXXXXXXXXXXXXXXXXXXX"
-        dev = InputDevice(devicePath)
+if __name__ == "__main__":
+    devicePath = os.environ['RFID_DEVICE_PATH']
 
-        code = ""
+    keys = "X^1234567890XXXXqwertzuiopXXXXasdfghjklXXXXXyxcvbnmXXXXXXXXXXXXXXXXXXXXXXX"
+    dev = InputDevice(devicePath)
 
-        while True:
-            r, w, x = select([dev], [], [])
-            for event in dev.read():
-                if event.type == 1 and event.value == 1:
-                    character = keys[event.code]
-                    if character is "X":
-                        print(code + " was read")
-                        self.play_folder(code)
-                        code = ""
-                    else:
-                        code += character
+    code = ""
+
+    while True:
+        r, w, x = select([dev], [], [])
+        for event in dev.read():
+            if event.type == 1 and event.value == 1:
+                character = keys[event.code]
+                if character is "X":
+                    print(code + " was read")
+                    self.play_folder(code)
+                    code = ""
+                else:
+                    code += character

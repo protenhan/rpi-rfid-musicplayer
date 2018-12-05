@@ -9,6 +9,7 @@ RUN env GOOS=linux GOARCH=arm GOARM=7 go build -o rpi-rfid-musicplayer_player
 
 # Create the Raspi Container
 FROM arm32v6/alpine:latest
+LABEL maintainer="@protenhan"
 COPY qemu-arm-static /usr/bin/
 
 RUN apk update &&\
