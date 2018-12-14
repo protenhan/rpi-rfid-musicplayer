@@ -18,7 +18,7 @@ if __name__ == "__main__":
     dev = InputDevice(devicePath)
 
     code = ""
-
+    print('Now waiting for cards...')
     while True:
         r, w, x = select([dev], [], [])
         for event in dev.read():
