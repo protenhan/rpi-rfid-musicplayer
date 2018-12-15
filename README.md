@@ -42,3 +42,16 @@ My RFID Reader presents itself as an HumanInterfaceDevice (a.k.a. keyboard) to t
 ```
 docker run --rm -e RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device /dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd --device /dev/snd -v /etc/asound.conf:/etc/asound.conf protenhan/rpi-rfid-musicplayer
 ```
+
+
+## Architecture overview
+(And before you ask, of course this is overengineered 👨🏻‍💻)
+
+The whole player experience consists of 3 containers. 
+
+### The RFID_READER container 
+Attaches to the USB RFID reader, captures the event, when a RFID card is read and then sends a POST request to the player container with the id of the RFID card.
+
+### The PLAYER container
+This container features the actual audio playback logic. Playing the audio files is handled by [MPV Player](https://mpv.io) which is running headless. MPV player is controlled by a small go application that runs REST endpoints for POSTing RFID card IDs and control events (pause, volume up, etc) and then forwards these events to the MPV player instance. 
+
