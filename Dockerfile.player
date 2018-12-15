@@ -1,7 +1,7 @@
 FROM golang:1.11.2-alpine3.8 as builder
 
 WORKDIR /go/src/app
-COPY ./src/go .
+COPY ./src/player/go .
 
 RUN apk update && apk add git
 RUN go get -d -v ./...
@@ -24,6 +24,7 @@ RUN apk update &&\
 RUN sed '/audio:x:18/s/$/root/' /etc/group
 
 COPY --from=builder /go/src/app/rpi-rfid-musicplayer_player /rpi-rfid-musicplayer_player
-EXPOSE 8000
-CMD [ "/rpi-rfid-musicplayer_player" ]
+COPY ./src/player/start_player.sh /start_player.sh
 
+EXPOSE 8000
+CMD [ "/start_player.sh" ]
