@@ -55,7 +55,7 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 	println("New Playlist ID is " + Playlist.ID)
 	currentPlaylist = Playlist
 	json.NewEncoder(writer).Encode(currentPlaylist)
-
+	startPlayback()
 }
 
 func startPlayback() {
