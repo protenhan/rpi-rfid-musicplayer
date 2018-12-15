@@ -7,6 +7,8 @@ services:
       - /etc/asound.conf:/etc/asound.conf
     devices:
       - "/dev/snd:/dev/snd"
+    expose: 
+      - "8000"
   
   rfid_reader:
     image: protenhan/rpi-rfid-musicplayer_reader:latest
