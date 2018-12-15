@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/blang/mpv"
 	"github.com/gorilla/mux"
 )
 
@@ -31,8 +32,14 @@ var currentPlaylist playlist
 var currentVolume int16
 var playerState state
 
+var jsonIpcSocketPath = "/tmp/mpvsocket"
+var mpcClient = mpv.NewClient(mpv.NewIPCClient(jsonIpcSocketPath))
+
 // our main function
 func main() {
+	println("connecting to mpv")
+
+	playerState = STOPPED
 	println("player started and listening")
 	router := mux.NewRouter()
 	router.HandleFunc("/rfid_player/playlist/{id}", startPlaybackOfPlaylistWithID).Methods("POST")
@@ -48,4 +55,19 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 	println("New Playlist ID is " + Playlist.ID)
 	currentPlaylist = Playlist
 	json.NewEncoder(writer).Encode(currentPlaylist)
+
+}
+
+func startPlayback() {
+	playlistPath := "/audio/" + currentPlaylist.ID + "/playlist.m3u"
+	// this switch statement is here only as placeholder, if I ever find a reason to implement a diefferent behaviour.
+	mpcClient.LoadList(playlistPath, "LoadListModeReplace")
+	println("loaded playlist " + playlistPath + " in MPV")
+	resumePlayback()
+}
+
+func resumePlayback() {
+	mpcClient.SetPause(false)
+	playerState = PLAYING
+	println("resumed playback")
 }
