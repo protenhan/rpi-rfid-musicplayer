@@ -3,7 +3,7 @@ services:
 - docker
 language: bash
 env:
-- RFID_MUSICPLAYER=0.3.1
+- RFID_MUSICPLAYER=0.4.0
 script:
 # prepare for cross compiling
 - ./prepare_local_build_env.sh
@@ -11,6 +11,8 @@ script:
 - docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -f Dockerfile.rfid_reader -t protenhan/rpi-rfid-musicplayer_reader .
 ## build the main player
 - docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -f Dockerfile.player -t protenhan/rpi-rfid-musicplayer_player .
+## build the button controler
+- docker build --build-arg RFID_MUSICPLAYER=$RFID_MUSICPLAYER -f Dockerfile.button_control -t protenhan/rpi-rfid-musicplayer_control .
 ## push the player image
 - >
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
@@ -24,4 +26,11 @@ script:
     docker tag $DOCKER_USER/rpi-rfid-musicplayer_reader $DOCKER_USER/rpi-rfid-musicplayer_reader:$RFID_MUSICPLAYER-alpine
     docker push $DOCKER_USER/rpi-rfid-musicplayer_reader:$RFID_MUSICPLAYER-alpine
     docker push $DOCKER_USER/rpi-rfid-musicplayer_reader
+  fi
+## push control  image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then  docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    docker tag $DOCKER_USER/rpi-rfid-musicplayer_control $DOCKER_USER/rpi-rfid-musicplayer_control:$RFID_MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer_control:$RFID_MUSICPLAYER-alpine
+    docker push $DOCKER_USER/rpi-rfid-musicplayer_control
   fi

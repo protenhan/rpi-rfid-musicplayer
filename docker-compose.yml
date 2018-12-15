@@ -17,3 +17,10 @@ services:
     environment:
       - RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd
       - PLAYER_HOST=player:8000
+
+  button_control:
+    image: protenhan/rpi-rfid-musicplayer_control:latest
+    devices:
+      - "/dev/gpiomem:/dev/gpiomem"
+    environment:
+      - PLAYER_HOST=player:8000

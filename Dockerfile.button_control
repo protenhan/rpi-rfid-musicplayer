@@ -11,7 +11,7 @@ RUN apk update &&\
         musl-dev 
 
 # Setup for the project
-COPY src/rfid_reader/python /rfid-musicplayer/
-RUN pip3 install -r /rfid-musicplayer/requirements.txt
+COPY src/button_control/python /button_control/
+RUN pip3 install -r /button_control/requirements.txt
 
-CMD ["python3","-u","/rfid-musicplayer/rfid_reader.py"]
+CMD ["python3","-u","/button_control/button_control.py"]
