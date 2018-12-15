@@ -14,4 +14,4 @@ RUN apk update &&\
 COPY src/python/rfid_reader /rfid-musicplayer/
 RUN pip3 install -r /rfid-musicplayer/requirements.txt
 
-CMD python3 /rfid-musicplayer/rfid_reader.py
+CMD ["python3","-u","/rfid-musicplayer/rfid_reader.py"]
