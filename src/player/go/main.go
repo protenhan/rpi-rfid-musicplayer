@@ -59,7 +59,7 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 }
 
 func startPlayback() {
-	playlistPath := "/audio/" + currentPlaylist.ID + "/playlist.m3u"
+	playlistPath := "/audio/" + currentPlaylist.ID + "/" + currentPlaylist.ID + ".m3u"
 	// this switch statement is here only as placeholder, if I ever find a reason to implement a diefferent behaviour.
 	mpcClient.LoadList(playlistPath, "LoadListModeReplace")
 	println("loaded playlist " + playlistPath + " in MPV")
