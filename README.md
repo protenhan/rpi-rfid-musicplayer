@@ -14,9 +14,10 @@ Musicplayer for the rapsberry pi that plays music based on RFID cards that are p
 ## Running Musicplayer
 
 1. Flash a [current Raspbian image](https://www.raspberrypi.org/downloads/raspbian/) onto your SD card
-2. Set `gpu_mem` to 32Mb or less in */boot/config.txt* . Who needs UI anyway? 😜
+2. Enable the uart GPIO pin so we can add a power LED without coding later on and set the `gpu_mem` to 32Mb or less in */boot/config.txt* . Who needs UI anyway? 😜 
     ```
     gpu_mem=32
+    enable_uart=1
     ```
 3. **(optional)** Configure your Wifi in */boot/wpa_supplicant.conf* 
 ```
@@ -33,9 +34,10 @@ network={
 4. Enable SSH by putting an empty file named `ssh` onto */boot*
 5. Put SD Card into Raspi and boot it. 
 6. Finish the configuration of your Raspi with `raspi-config` and change the default password with `passwd`
-7. Install Docker-CE
-    1. aa
-    2. a
+7. Install Docker-CE [official documentation](https://docs.docker.com/install/linux/docker-ce/debian/)
+8. Copy audio files onto the raspberry (e.g. with scp)
+    1. the player will look for folders that have the same name as the RFID Card Tag (e.g. 0015439814). Therefore every album is in one folder and gets named accordingly
+    2. Run the very helpful [playlist creation script](https://gist.github.com/scarlson/944860) inside your audio root folder. It will create .m3u playlists for each folder that are named as the contianing folder. These playlist files are then passed to MPV to play the content of the folders.
 
 My RFID Reader presents itself as an HumanInterfaceDevice (a.k.a. keyboard) to the system. Set the RFID_DEVICE_PATH environment variable to specify the devicePath of your RFID reader  
 
@@ -55,3 +57,13 @@ Attaches to the USB RFID reader, captures the event, when a RFID card is read an
 ### The PLAYER container
 This container features the actual audio playback logic. Playing the audio files is handled by [MPV Player](https://mpv.io) which is running headless. MPV player is controlled by a small go application that runs REST endpoints for POSTing RFID card IDs and control events (pause, volume up, etc) and then forwards these events to the MPV player instance. 
 
+## Wiring Layout
+
+The player features buttons for 
+* Play/pause
+* Volume up
+* Volume down
+* next track ⏭
+* previous track ⏮
+
+The wiring layout for the Raspberry Pi should look like this ![Breadbord layout](docs/img/rfid_player_wiring_bb.png)

@@ -37,12 +37,11 @@ var mpcClient = mpv.NewClient(mpv.NewIPCClient(jsonIpcSocketPath))
 
 // our main function
 func main() {
-	println("connecting to mpv")
-
 	playerState = STOPPED
 	println("player started and listening")
 	router := mux.NewRouter()
 	router.HandleFunc("/rfid_player/playlist/{id}", startPlaybackOfPlaylistWithID).Methods("POST")
+	router.HandleFunc("/rfid_player/play", handlePlayRequest).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
@@ -56,6 +55,10 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 	currentPlaylist = Playlist
 	json.NewEncoder(writer).Encode(currentPlaylist)
 	startPlayback()
+}
+
+func handlePlayRequest(writer http.ResponseWriter, request *http.Request) {
+	resumePlayback()
 }
 
 func startPlayback() {
