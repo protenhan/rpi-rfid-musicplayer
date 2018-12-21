@@ -60,10 +60,9 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 func handlePlayRequest(writer http.ResponseWriter, request *http.Request) {
 	if playerState == PLAYING {
 		pausePlayback()
-	} else {
+	} else if playerState == PAUSED {
 		resumePlayback()
 	}
-
 }
 
 func startPlayback() {

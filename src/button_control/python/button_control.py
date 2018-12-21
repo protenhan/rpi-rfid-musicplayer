@@ -6,6 +6,16 @@ import signal
 
 button_play = 16
 
+# cleanup the GPIOs when shutting down
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
+
 def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(button_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -31,13 +41,3 @@ def endprogram():
 if __name__ == '__main__':
     setup()
     loop()
-    
-# cleanup the GPIOs when shutting down
-class GracefulKiller:
-  kill_now = False
-  def __init__(self):
-    signal.signal(signal.SIGINT, self.exit_gracefully)
-    signal.signal(signal.SIGTERM, self.exit_gracefully)
-
-  def exit_gracefully(self,signum, frame):
-    self.kill_now = True
