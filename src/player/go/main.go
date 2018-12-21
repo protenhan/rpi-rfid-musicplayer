@@ -58,7 +58,12 @@ func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Req
 }
 
 func handlePlayRequest(writer http.ResponseWriter, request *http.Request) {
-	resumePlayback()
+	if playerState == PLAYING {
+		pausePlayback()
+	} else {
+		resumePlayback()
+	}
+
 }
 
 func startPlayback() {
@@ -73,4 +78,10 @@ func resumePlayback() {
 	mpcClient.SetPause(false)
 	playerState = PLAYING
 	println("resumed playback")
+}
+
+func pausePlayback() {
+	mpcClient.SetPause(true)
+	playerState = PAUSED
+	println("paused playback")
 }
