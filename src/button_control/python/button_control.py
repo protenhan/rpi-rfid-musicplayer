@@ -2,41 +2,40 @@
 
 import RPi.GPIO as GPIO
 import time
+import signal
 
-button = 16
-led = 18
+button_play = 16
 
+def setup():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(button_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-class ButtonController:
-    @staticmethod
-    def setup():
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(led, GPIO.OUT)
+def loop():
+    while True:
+        button_state = GPIO.input(button_play)
+        if button_state == False:
+            # TODO: send web request to player
+            print('Play button pressed...')
+            while GPIO.input(button_play) == False:
+                time.sleep(0.3)
+    if killer.kill_now:
+        print('SIGTERM detected')
+        endprogram()
 
-    @staticmethod
-    def loop():
-        while True:
-            button_state = GPIO.input(button)
-            if button_state == False:
-                GPIO.output(led, True)
-                print('Button Pressed...')
-                while GPIO.input(button) == False:
-                    time.sleep(0.2)
-            else:
-                GPIO.output(led, False)
+def endprogram():
+    print('cleaning up the GPIOs')
+    GPIO.cleanup()
 
-    @staticmethod
-    def endprogram():
-        GPIO.output(led, False)
-        GPIO.cleanup()
+if __name__ == '__main__':
+    setup()
+    loop()
+    
+# cleanup the GPIOs when shutting down
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
 
-    @staticmethod
-    def activate_buttons():
-        setup()
-        try:
-            loop()
-
-        except KeyboardInterrupt:
-            print('keyboard interrupt detected')
-            endprogram()
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
