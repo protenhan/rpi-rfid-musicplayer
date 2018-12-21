@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import RPi.GPIO as GPIO
 import time
 import signal
@@ -8,6 +9,8 @@ import requests
 player_host = os.environ['PLAYER_HOST']
 
 button_play = 16
+button_volume_up = 18
+button_volume_down = 13
 
 # cleanup the GPIOs when shutting down
 class GracefulKiller:
@@ -22,23 +25,40 @@ class GracefulKiller:
 def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(button_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(button_volume_up, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(button_volume_down, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     print('Initialized GPIOs for buttons - ready to push')
 
 def send_play_request():
-    r = requests.post('http://' + player_host + '/rfid_player/play')
+    r = requests.get('http://' + player_host + '/rfid_player/play')
     print(r.status_code, r.reason)
+
+def send_volume_request(change_event):
+        r = requests.get('http://' + player_host + '/rfid_player/volume/' + change_event)
+        print(r.status_code, r.reason)
 
 def loop():
     killer = GracefulKiller()
     while True:
         button_play_state = GPIO.input(button_play)
+        button_volume_up_state = GPIO.input(button_volume_up)
+        button_volume_down_state = GPIO.input(button_volume_down)
         
         if button_play_state == False:
             print('Play/Pause button pressed...')
             send_play_request()
             while GPIO.input(button_play) == False:
                 time.sleep(0.3)
-
+        if button_volume_up_state == False:
+            print('Volume up button pressed...')
+            send_volume_request('up')
+            while GPIO.input(button_volume_up) == False:
+                time.sleep(0.3)
+        if button_volume_down_state == False:
+            print('Volume down button pressed...')
+            send_volume_request('down')
+            while GPIO.input(button_volume_down) == False:
+                time.sleep(0.3)
     if killer.kill_now:
         print('SIGTERM detected')
         endprogram()

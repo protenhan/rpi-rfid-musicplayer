@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -33,25 +34,29 @@ var currentVolume int16
 var playerState state
 
 var jsonIpcSocketPath = "/tmp/mpvsocket"
-var mpcClient = mpv.NewClient(mpv.NewIPCClient(jsonIpcSocketPath))
+var mpvClient = mpv.NewClient(mpv.NewIPCClient(jsonIpcSocketPath))
 
 // our main function
 func main() {
 	playerState = STOPPED
-	println("player started and listening")
+	fmt.Println("player started and listening")
 	router := mux.NewRouter()
 	router.HandleFunc("/rfid_player/playlist/{id}", startPlaybackOfPlaylistWithID).Methods("POST")
 	router.HandleFunc("/rfid_player/play", handlePlayRequest).Methods("GET")
+	router.HandleFunc("/rfid_player/volume/up", handelVolumeUpRequest).Methods("GET")
+	router.HandleFunc("/rfid_player/volume/down", handelVolumeDownRequest).Methods("GET")
+	router.HandleFunc("/rfid_player/track/next", handelNextTrackRequest).Methods("GET")
+	router.HandleFunc("/rfid_player/track/prev", handelPrevTrackRequest).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
 func startPlaybackOfPlaylistWithID(writer http.ResponseWriter, request *http.Request) {
-	println("recieved POST request")
+	fmt.Println("recieved POST request")
 	params := mux.Vars(request)
 	var Playlist playlist
 	_ = json.NewDecoder(request.Body).Decode(&Playlist)
 	Playlist.ID = params["id"]
-	println("New Playlist ID is " + Playlist.ID)
+	fmt.Println("New Playlist ID is " + Playlist.ID)
 	currentPlaylist = Playlist
 	json.NewEncoder(writer).Encode(currentPlaylist)
 	startPlayback()
@@ -65,22 +70,50 @@ func handlePlayRequest(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func handelVolumeDownRequest(writer http.ResponseWriter, request *http.Request) {
+	currentVolume, _ := mpvClient.Volume()
+	if currentVolume <= 0 {
+		fmt.Printf("Current Volume: %.2f\n", currentVolume)
+		newVolume := currentVolume - float64(10.0)
+		mpvClient.SetProperty("volume", newVolume)
+		fmt.Printf("New Volume: %.2f\n", newVolume)
+	}
+}
+
+func handelVolumeUpRequest(writer http.ResponseWriter, request *http.Request) {
+	currentVolume, _ := mpvClient.Volume()
+	if currentVolume >= 100 {
+		fmt.Printf("Current Volume: %.2f\n", currentVolume)
+		newVolume := currentVolume + float64(10.0)
+		mpvClient.SetProperty("volume", newVolume)
+		fmt.Printf("New Volume: %.2f\n", newVolume)
+	}
+}
+
+func handelNextTrackRequest(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+func handelPrevTrackRequest(writer http.ResponseWriter, request *http.Request) {
+
+}
+
 func startPlayback() {
 	playlistPath := "/audio/" + currentPlaylist.ID + "/" + currentPlaylist.ID + ".m3u"
 	// this switch statement is here only as placeholder, if I ever find a reason to implement a diefferent behaviour.
-	mpcClient.LoadList(playlistPath, "replace")
-	println("loaded playlist " + playlistPath + " in MPV")
+	mpvClient.LoadList(playlistPath, "replace")
+	fmt.Println("loaded playlist " + playlistPath + " in MPV")
 	resumePlayback()
 }
 
 func resumePlayback() {
-	mpcClient.SetPause(false)
+	mpvClient.SetPause(false)
 	playerState = PLAYING
-	println("resumed playback")
+	fmt.Println("resumed playback")
 }
 
 func pausePlayback() {
-	mpcClient.SetPause(true)
+	mpvClient.SetPause(true)
 	playerState = PAUSED
-	println("paused playback")
+	fmt.Println("paused playback")
 }
