@@ -24,6 +24,10 @@ def setup():
     GPIO.setup(button_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     print('Initialized GPIOs for buttons - ready to push')
 
+def send_play_request():
+    r = requests.post('http://' + player_host + '/rfid_player/play')
+    print(r.status_code, r.reason)
+
 def loop():
     killer = GracefulKiller()
     while True:
@@ -39,9 +43,6 @@ def loop():
         print('SIGTERM detected')
         endprogram()
 
-def send_play_request()
-    r = requests.post('http://' + player_host + '/rfid_player/play')
-    print(r.status_code, r.reason)
 
 def endprogram():
     print('cleaning up the GPIOs')
