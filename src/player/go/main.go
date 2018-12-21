@@ -72,7 +72,7 @@ func handlePlayRequest(writer http.ResponseWriter, request *http.Request) {
 
 func handelVolumeDownRequest(writer http.ResponseWriter, request *http.Request) {
 	currentVolume, _ := mpvClient.Volume()
-	if currentVolume <= 0 {
+	if currentVolume > 0 {
 		fmt.Printf("Current Volume: %.2f\n", currentVolume)
 		newVolume := currentVolume - float64(10.0)
 		mpvClient.SetProperty("volume", newVolume)
@@ -82,7 +82,7 @@ func handelVolumeDownRequest(writer http.ResponseWriter, request *http.Request) 
 
 func handelVolumeUpRequest(writer http.ResponseWriter, request *http.Request) {
 	currentVolume, _ := mpvClient.Volume()
-	if currentVolume >= 100 {
+	if currentVolume < 100 {
 		fmt.Printf("Current Volume: %.2f\n", currentVolume)
 		newVolume := currentVolume + float64(10.0)
 		mpvClient.SetProperty("volume", newVolume)
