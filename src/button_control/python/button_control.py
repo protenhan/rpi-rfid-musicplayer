@@ -3,6 +3,9 @@
 import RPi.GPIO as GPIO
 import time
 import signal
+import requests
+
+player_host = os.environ['PLAYER_HOST']
 
 button_play = 16
 
@@ -24,15 +27,21 @@ def setup():
 def loop():
     killer = GracefulKiller()
     while True:
-        button_state = GPIO.input(button_play)
-        if button_state == False:
-            # TODO: send web request to player
+        button_play_state = GPIO.input(button_play)
+        
+        if button_play_state == False:
             print('Play/Pause button pressed...')
+            send_play_request()
             while GPIO.input(button_play) == False:
                 time.sleep(0.3)
+
     if killer.kill_now:
         print('SIGTERM detected')
         endprogram()
+
+def send_play_request()
+    r = requests.post('http://' + player_host + '/rfid_player/play')
+    print(r.status_code, r.reason)
 
 def endprogram():
     print('cleaning up the GPIOs')
