@@ -91,11 +91,13 @@ func handelVolumeUpRequest(writer http.ResponseWriter, request *http.Request) {
 }
 
 func handelNextTrackRequest(writer http.ResponseWriter, request *http.Request) {
-
+	fmt.Println("Revieved request for next track")
+	mpvClient.PlaylistNext()
 }
 
 func handelPrevTrackRequest(writer http.ResponseWriter, request *http.Request) {
-
+	fmt.Println("Revieved request for prev track")
+	mpvClient.PlaylistPrevious()
 }
 
 func startPlayback() {
