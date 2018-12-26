@@ -68,6 +68,7 @@ def loop():
             send_track_request('prev')
             while GPIO.input(button_track_prev) == False:
                 time.sleep(0.3)
+        time.sleep(0.1)
 
 if __name__ == '__main__':
     setup()
