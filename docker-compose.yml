@@ -9,6 +9,7 @@ services:
       - "/dev/snd:/dev/snd"
     expose: 
       - "8000"
+    restart: always
   
   rfid_reader:
     image: protenhan/rpi-rfid-musicplayer_reader:latest
@@ -17,6 +18,7 @@ services:
     environment:
       - RFID_DEVICE_PATH=/dev/input/by-id/usb-Sycreader_USB_Reader_08FF20150112-event-kbd
       - PLAYER_HOST=player:8000
+    restart: always
 
   button_control:
     image: protenhan/rpi-rfid-musicplayer_control:latest
@@ -24,3 +26,4 @@ services:
       - "/dev/gpiomem:/dev/gpiomem"
     environment:
       - PLAYER_HOST=player:8000
+    restart: always
